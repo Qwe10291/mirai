@@ -11,6 +11,7 @@ package net.mamoe.mirai.utils
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.ByteArraySerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.serializer
 import java.nio.ByteBuffer
@@ -188,8 +189,8 @@ public object SecretsProtection {
         serialize = { it.data.duplicate().readString() }
     )
 
-    public object EscapedByteBufferSerializer : KSerializer<EscapedByteBuffer> by serializer<ByteArray>().map(
-        serializer<ByteArray>().descriptor.copy("EscapedByteBuffer"),
+    public object EscapedByteBufferSerializer : KSerializer<EscapedByteBuffer> by ByteArraySerializer().map(
+        ByteArraySerializer().descriptor.copy("EscapedByteBuffer"),
         deserialize = { EscapedByteBuffer(escape(it)) },
         serialize = { it.data.duplicate().readBytes() }
     )
